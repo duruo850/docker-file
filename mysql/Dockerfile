@@ -1,7 +1,7 @@
 FROM duruo850/base
 
 # Add image configuration and scripts
-RUN ENV DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server
 ADD my.cnf /etc/mysql/conf.d/my.cnf 
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
