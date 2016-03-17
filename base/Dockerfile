@@ -5,5 +5,5 @@ MAINTAINER duruo850
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get -y upgrade 
 # RUN tools = 'vim g++'
-RUN tools='vim'; 
-RUN apt-get install -y $tools --no-install-recommends
+RUN tools='vim'\
+    &&apt-get install -y $tools --no-install-recommends
