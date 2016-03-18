@@ -7,6 +7,7 @@ RUN apt-get update
 RUN apt-get install -y jenkins=1.653
 
 ADD run /usr/local/bin/
+RUN chmod +x /usr/local/bin/run
 
 # remove apt temp files
 RUN rm -rf /var/lib/apt/lists/*
