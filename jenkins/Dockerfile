@@ -14,5 +14,6 @@ RUN rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8080
 
-VOLUME ["/var/lib/jenkins"]
+# unused volume, we want to save the jenkins jobs
+#VOLUME ["/var/lib/jenkins"]
 CMD ["/usr/local/bin/run"]
