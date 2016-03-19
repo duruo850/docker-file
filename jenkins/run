@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# Jenkins is run with user `jenkins`, uid = 1000
+# If you bind mount a volume from the host or a data container, 
+# ensure you use the same uid
+useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins
 mkdir -p /var/lib/jenkins
 chown jenkins /var/lib/jenkins
 exec su jenkins -c "java -jar /usr/share/jenkins/jenkins.war"
