@@ -1,4 +1,23 @@
 #!/bin/bash
 set -e
 
-echo $#
+GIT_RES_PATH=${GIT_RES_PATH:-""}
+RUN_PATH=${RUN_PATH:-""}
+
+RUN_DIR=/run
+mkdir -p $RUN_DIR
+
+cd $RUN_DIR
+git clone $GIT_RES_PATH
+cd ~
+
+RUN_FULL_PATH=$RUN_DIR"/"$RUN_PATH
+chmod +x $RUN_FULL_PATH
+
+echo "GIT_RES_PATH:"$GIT_RES_PATH
+echo "RUN_PATH:"$RUN_PATH
+echo "RUN_PARAMS:"$*
+echo "RUN_FULL_PATH:"$RUN_FULL_PATH
+echo "CMD:"$RUN_FULL_PATH $*
+
+exec $RUN_FULL_PATH $*

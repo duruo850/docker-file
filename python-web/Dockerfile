@@ -8,6 +8,7 @@ RUN apt-get install -y swig
 RUN apt-get install -y libssl-dev
 RUN apt-get install -y pylint
 RUN apt-get install -y libfreetype6-dev
+RUN apt-get install -y git
 
 RUN apt-get install -y wget
 RUN wget https://pypi.python.org/packages/2.7/p/pyxmpp2/pyxmpp2-2.0.0-py2.7.egg#md5=deb473e9747746629ade17c5114e85f8
@@ -18,4 +19,5 @@ RUN pip install -r requirements.txt
 
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
+VOLUME ["/run"]
 ENTRYPOINT ["/usr/local/bin/run"]
