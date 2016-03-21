@@ -15,3 +15,7 @@ RUN easy_install pyxmpp2-2.0.0-py2.7.egg
 
 ADD requirements.txt ./
 RUN pip install -r requirements.txt
+
+ADD run /usr/local/bin/run
+RUN chmod +x /usr/local/bin/run
+ENTRYPOINT ["/usr/local/bin/run"]
