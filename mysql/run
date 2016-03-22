@@ -21,9 +21,10 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 UPDATE user SET password=PASSWORD("$MYSQL_ROOT_PASSWORD") WHERE user='root';
 EOF
 
-if [[ $MYSQL_DATABASE != "" ]]; then
-    echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` CHARACTER SET utf8 COLLATE utf8_general_ci;" >> $tfile
-fi
+# no create database for user, because we can't init it, it should be created by service which used
+#if [[ $MYSQL_DATABASE != "" ]]; then
+#    echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` CHARACTER SET utf8 COLLATE utf8_general_ci;" >> $tfile
+#fi
 
 if [[ $MYSQL_USER != "" ]]; then
     echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';" >> $tfile
