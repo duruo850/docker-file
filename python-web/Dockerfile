@@ -26,15 +26,5 @@ RUN pip install -r requirements.txt
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
-
-# HTTP_PORT
-EXPOSE 20001
-
-# TCP_PORT
-EXPOSE 20002
-
-# UDP_PORT
-EXPOSE 20003
-
 VOLUME ["/run"]
 ENTRYPOINT ["/usr/local/bin/run"]

@@ -1,5 +1,5 @@
 docker-python-web
-============
+====================
 
 	python web tools: 
 	apt-get install --yes python-dev
@@ -36,4 +36,13 @@ docker-python-web
 	pip install gevent-websocket==0.9.5
 	pip install paho-mqtt==1.1
 	pip install docutils==0.12
+	
+Environment variables
+---------------------
+
+ - `GIT_RES_PATH`: The repository of the git project 
+ - `RUN_PATH`: The run path in the git repository
+ - `HTTP_PORT`: The port listening for http protocol when run
+ - `TCP_PORT`: The port listening for tcp protocol when run
+ - `UDP_PORT`: The port listening for udp protocol when run
 

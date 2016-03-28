@@ -3,9 +3,9 @@ set -e
 
 GIT_RES_PATH=${GIT_RES_PATH:-""}
 RUN_PATH=${RUN_PATH:-""}
-HTTP_PORT=20001
-TCP_PORT=20002
-UDP_PORT=20003
+HTTP_PORT=${HTTP_PORT:-""}
+TCP_PORT=${TCP_PORT:-""}
+UDP_PORT=${UDP_PORT:-""}
 
 RUN_DIR=/run
 mkdir -p $RUN_DIR
@@ -23,6 +23,7 @@ echo "RUN_PARAMS:"$*
 echo "RUN_FULL_PATH:"$RUN_FULL_PATH
 echo "HTTP_PORT:"$HTTP_PORT
 echo "TCP_PORT:"$TCP_PORT
-echo "CMD:"$RUN_FULL_PATH $* --http_port $HTTP_PORT  --tcp_port $TCP_PORT
+echo "UDP_PORT:"$UDP_PORT
+echo "CMD:"$RUN_FULL_PATH $* --http_port $HTTP_PORT  --tcp_port $TCP_PORT  --udp_port $UDP_PORT
 
 exec $RUN_FULL_PATH $* --http_port $HTTP_PORT  --tcp_port $TCP_PORT --udp_port $UDP_PORT
