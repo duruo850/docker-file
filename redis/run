@@ -4,16 +4,14 @@ set -e
 REDIS_USER=redis
 REDIS_DATA_DIR=/var/lib/redis
 REDIS_LOG_DIR=/var/log/redis
-REDIS_SOCK_DIR=/run/redis
-REDIS_CONF=/etc/redis/redis.conf
+REDIS_SERVER=/usr/local/bin/redis-server
+REDIS_CONF=/usr/local/bin/redis.conf
 
 REDIS_PASSWORD=${REDIS_PASSWORD:-}
-BIND_IP=${BIND_IP:-""}
 
-create_socket_dir() {
-  mkdir -p $REDIS_SOCK_DIR
-  chmod -R 0755 $REDIS_SOCK_DIR
-  chown -R $REDIS_USER:$REDIS_USER $REDIS_SOCK_DIR
+create_user() {
+  addgroup $REDIS_USER
+  useradd  -p "S0dAmthh3vjPQ" -g $REDIS_USER  $REDIS_USER
 }
 
 create_data_dir() {
@@ -29,16 +27,17 @@ create_log_dir() {
 }
 
 update_conf() {
-  if [[ $BIND_IP != "" ]]; then
-	sed 's/^bind $BIND_IP/bind 0.0.0.0/' -i $REDIS_CONF
-  fi
+  # using '%' replace '/' to fix the expression error where REDIS_DATA_DIR has '/'
+  sed -i "s%^dir ./%dir $REDIS_DATA_DIR%" $REDIS_CONF
+  sed -i 's/^daemonize yes/daemonize no/'  $REDIS_CONF
+  sed -i 's/^# unixsocket /unixsocket /' $REDIS_CONF
+  sed -i 's/^# unixsocketperm 755/unixsocketperm 777/' $REDIS_CONF
 }
 
-create_socket_dir
+create_user
 create_data_dir
-create_socket_dir
 update_conf
 
 echo "Starting redis-server..."
-exec start-stop-daemon --start --chuid $REDIS_USER:$REDIS_USER --exec $(which redis-server) -- $REDIS_CONF ${REDIS_PASSWORD:+--requirepass $REDIS_PASSWORD} $*
+exec start-stop-daemon --start --chuid $REDIS_USER:$REDIS_USER --exec $REDIS_SERVER -- $REDIS_CONF ${REDIS_PASSWORD:+--requirepass $REDIS_PASSWORD} $*
 

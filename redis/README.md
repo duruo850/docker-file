@@ -104,4 +104,3 @@ docker exec -it redis tail -f /var/log/redis/redis-server.log
 
 
  - `REDIS_PASSWORD`: The password for the redis security
- - `BIND_IP`: The access ip banding for the redis server

@@ -1,15 +1,23 @@
 FROM duruo850/base
 
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server=3.0.7 \
- && sed 's/^daemonize yes/daemonize no/' -i /etc/redis/redis.conf \
- && sed 's/^# unixsocket /unixsocket /' -i /etc/redis/redis.conf \
- && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis/redis.conf \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y g++ wget make\
  && rm -rf /var/lib/apt/lists/*
-
+ 
+RUN cd /usr/local/bin \
+ && wget http://download.redis.io/releases/redis-3.0.7.tar.gz \
+ && tar zxvf redis-3.0.7.tar.gz \
+ && cd redis-3.0.7 \
+ && make \
+ && cd .. \
+ && cp redis-3.0.7/src/redis-server ./ \
+ && cp redis-3.0.7/redis.conf ./ \
+ && rm -f redis-3.0.7.tar.gz \
+ && rm -rf redis-3.0.7
+ 
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
 EXPOSE 6379/tcp
 VOLUME ["/var/lib/redis"]
-ENTRYPOINT ["/usr/local/bin/run"]
+CMD ["/usr/local/bin/run"]
