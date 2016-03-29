@@ -1,5 +1,4 @@
-docker-base
-============
+# Introduction
 
-	ubuntu oracle jdk7
+Java SE Development Kit
 
