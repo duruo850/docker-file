@@ -1,6 +1,7 @@
 
 
 # duruo850/redis
+====================
 
 - [Introduction](#introduction)
 - [Getting started](#getting-started)
@@ -10,6 +11,7 @@
   - [Persistence](#persistence)
   - [Authentication](#authentication)
   - [Logs](#logs)
+- [Environment Variables](#environment-variables)
 
 # Introduction
 
@@ -96,3 +98,10 @@ To access the Redis logs you can use `docker exec`. For example:
 ```bash
 docker exec -it redis tail -f /var/log/redis/redis-server.log
 ```
+
+
+# Environment variables
+
+
+ - `REDIS_PASSWORD`: The password for the redis security
+ - `BIND_IP`: The access ip banding for the redis server
