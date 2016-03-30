@@ -12,24 +12,11 @@ MYSQL_PASS=${MYSQL_PASS:-}
 MYSQL_DB=${MYSQL_DB:-"openfire"}
 
 
-create_user() {
-  addgroup $OPENFIRE_USER
-  useradd  -p "S0dAmthh3vjPQ" -g $OPENFIRE_USER  $OPENFIRE_USER
-}
-
 create_log_dir() {
   echo "Initializing ${OPENFIRE_LOG_DIR}..."
   mkdir -p ${OPENFIRE_LOG_DIR}
   chmod -R 0755 ${OPENFIRE_LOG_DIR}
   chown -R ${OPENFIRE_USER}:${OPENFIRE_USER} ${OPENFIRE_LOG_DIR}
-}
-
-update_conf() {
-  # using '%' replace '/' to fix the expression error where REDIS_DATA_DIR has '/'
-  sed -i "s%^dir ./%dir $REDIS_DATA_DIR%" $REDIS_CONF
-  sed -i 's/^daemonize yes/daemonize no/'  $REDIS_CONF
-  sed -i 's/^# unixsocket /unixsocket /' $REDIS_CONF
-  sed -i 's/^# unixsocketperm 755/unixsocketperm 777/' $REDIS_CONF
 }
 
 check_db() {
@@ -48,19 +35,20 @@ check_db() {
   fi
 }
 
-reconfig(){
+update_conf(){
   sed -Ei "s/#OF_CONF_DB_HOST#/$MYSQL_HOST/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_PORT#/$MYSQL_PORT/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_USER_REPLACE#/$MYSQL_USER/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_PASS_REPLACE#/$MYSQL_PASS/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_NAME#/$MYSQL_DB/" /data/etc/openfire.xml
+  
+  rm -rf /etc/openfire/{conf,resources/security,lib/log4j.xml}
+  mv /data/etc/* /etc/openfire/
 }
 
-create_user
 create_log_dir
-update_conf
 check_db
-reconfig
+update_conf
 
 echo "Starting openfire-server..."
 exec start-stop-daemon --start --chuid $OPENFIRE_USER:$OPENFIRE_USER --exec /usr/bin/java -- \

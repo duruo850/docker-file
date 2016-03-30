@@ -1,7 +1,7 @@
 FROM duruo850/ubuntu-oracle-jdk
 
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y wget mysql-client\
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y wget unzip mysql-client\
  && rm -rf /var/lib/apt/lists/*
  
 ENV OPENFIRE_VERSION=4.0.2
