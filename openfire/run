@@ -36,14 +36,15 @@ check_db() {
 }
 
 update_conf(){
+  echo "update_conf"
   sed -Ei "s/#OF_CONF_DB_HOST#/$MYSQL_HOST/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_PORT#/$MYSQL_PORT/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_USER_REPLACE#/$MYSQL_USER/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_PASS_REPLACE#/$MYSQL_PASS/" /data/etc/openfire.xml && \
   sed -Ei "s/#OF_CONF_DB_NAME#/$MYSQL_DB/" /data/etc/openfire.xml
   
-  rm -rf /etc/openfire/{conf,resources/security,lib/log4j.xml}
-  mv /data/etc/* /etc/openfire/
+  cp -rf /data/etc/* /etc/openfire/
+  rm -rf /data/etc
 }
 
 create_log_dir
