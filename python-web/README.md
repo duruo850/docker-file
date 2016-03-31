@@ -65,7 +65,7 @@ pip install paho-mqtt==1.1
 
 pip install docutils==0.12
 	
-#Environment variables
+# Environment variables
 
  - `GIT_RES_PATH`: The repository of the git project 
  - `RUN_PATH`: The run path in the git repository
@@ -74,7 +74,8 @@ pip install docutils==0.12
  - `UDP_PORT`: The port listening for udp protocol when run
  
 
-#Example usage: 
+# Example usage: 
+
 sudo docker run -d --name fundtray_servermgr -p 16666:16666 -p 18888:18888 -p 16688:16688/udp -e GIT_RES_PATH=https://github.com/duruo850/FundTray.git -e RUN_PATH=FundTray/server/workspace/common_server/service_mgr/start.py duruo850/python-web --is_extranet 1 --db_host xxx.xxx.xxx.xxx --db_port 10306 --db_name xxxxx --db_user xxxxx --db_password xxxxx --http_port=16666 --tcp_port=18888 --udp_port=16688
 
 sudo docker run -d --name fundtray_mmmda -p 20001:20001 -p 20002:20002 -e GIT_RES_PATH=https://github.com/duruo850/FundTray.git -e RUN_PATH=FundTray/server/workspace/mmm_da/start.py duruo850/python-web --is_extranet 1 --sm_ip xxx.xxx.xxx.xxx --db_host xxx.xxx.xxx.xxx --db_port 10306 --db_user xxxxx --db_password xxxxx --http_port=20001 --tcp_port=20002

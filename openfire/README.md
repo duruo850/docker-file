@@ -3,7 +3,7 @@
 Openfire is a real time collaboration (RTC) server licensed under the Open Source Apache License. It uses the only widely adopted open protocol for instant messaging, XMPP (also called Jabber). Openfire is incredibly easy to setup and administer, but offers rock-solid security and performance.
 
 
-#Environment variables
+# Environment variables
 
 - `ADMIN_PASSWD`=The default passwd for admin account, admin default
 - `MYSQL_HOST`= The mysql host for the openfire service
@@ -12,7 +12,7 @@ Openfire is a real time collaboration (RTC) server licensed under the Open Sourc
 - `MYSQL_PASS`=The mysql pass for the openfire service
 - `MYSQL_DB`=The mysql database for the openfire service, openfire default
 
-#Example usage
+# Example usage
 
 ## Common
 
