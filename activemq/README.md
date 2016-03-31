@@ -1,22 +1,16 @@
 # Introduction
 
-Openfire is a real time collaboration (RTC) server licensed under the Open Source Apache License. It uses the only widely adopted open protocol for instant messaging, XMPP (also called Jabber). Openfire is incredibly easy to setup and administer, but offers rock-solid security and performance.
+Apache ActiveMQ ™ is the most popular and powerful open source messaging and Integration Patterns server.
+Apache ActiveMQ is fast, supports many Cross Language Clients and Protocols, comes with easy to use Enterprise Integration Patterns and many advanced features while fully supporting JMS 1.1 and J2EE 1.4. Apache ActiveMQ is released under the Apache 2.0 License
+Grab yourself a Download, try our Getting Started Guide, surf our FAQ or start Contributing and join us on our Discussion Forums.
 
-
-# Environment variables
-
-- `ADMIN_PASSWD`=The default passwd for admin account, admin default
-- `MYSQL_HOST`= The mysql host for the openfire service
-- `MYSQL_PORT`=The mysql port for the openfire service, 3306 default
-- `MYSQL_USER`=The mysql user for the openfire service
-- `MYSQL_PASS`=The mysql pass for the openfire service
-- `MYSQL_DB`=The mysql database for the openfire service, openfire default
+Note: this is just support for mqtt protocol!
 
 # Example usage
 
 ## Common
 
 
-```sudo docker run -d -p 13478:3478 -p 13479:3479 -p 15222:5222 -p 15223:5223 -p 15229:5229 -p 17070:7070 -p 17777:7777 -p 19090:9090 -p 19091:9091 -e ADMIN_PASSWD=xxxxx -e MYSQL_HOST=xxxxx -e MYSQL_PORT=3306 -e MYSQL_USER=xxxxx -e MYSQL_PASS=xxxxx duruo850/openfire
+```sudo docker run -d -p 11881:1881 duruo850/activemq
 ```
 
