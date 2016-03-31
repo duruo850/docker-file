@@ -2,9 +2,9 @@
 set -e
 
 OPENFIRE_USER=openfire
-OPENFIRE_DATA_DIR=/var/lib/openfire
 OPENFIRE_LOG_DIR=/var/log/openfire
 
+ADMIN_PASSWD=${ADMIN_PASSWD:-}
 MYSQL_HOST=${MYSQL_HOST:-}
 MYSQL_PORT=${MYSQL_PORT:-"3306"}
 MYSQL_USER=${MYSQL_USER:-}
@@ -47,9 +47,16 @@ update_conf(){
   rm -rf /data/etc
 }
 
+set_admin_passwd(){
+  if [[ $ADMIN_PASSWD != "" ]]; then
+    sed -Ei "s/'admin', 'admin', 'Administrator',/'admin', '$ADMIN_PASSWD', 'Administrator',/" /usr/share/openfire/resources/database/openfire_mysql.sql
+  fi
+}
+
 create_log_dir
 check_db
 update_conf
+set_admin_passwd
 
 echo "Starting openfire-server..."
 exec start-stop-daemon --start --chuid $OPENFIRE_USER:$OPENFIRE_USER --exec /usr/bin/java -- \

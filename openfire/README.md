@@ -5,6 +5,7 @@ Openfire is a real time collaboration (RTC) server licensed under the Open Sourc
 
 #Environment variables
 
+- `ADMIN_PASSWD`=The default passwd for admin account, admin default
 - `MYSQL_HOST`= The mysql host for the openfire service
 - `MYSQL_PORT`=The mysql port for the openfire service, 3306 default
 - `MYSQL_USER`=The mysql user for the openfire service
