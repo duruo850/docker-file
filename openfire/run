@@ -25,9 +25,11 @@ check_db() {
   $($MYSQL_CONN -e exit)
 
   # Drop and create, import database template.
-  echo "Drop and create openfire database"
-  $MYSQL_CONN -e "DROP DATABASE $MYSQL_DB ;" 2>/dev/null
+  echo "Drop database!!!"
+  $MYSQL_CONN -e "DROP DATABASE IF EXISTS $MYSQL_DB ;" 2>/dev/null
+  echo "Create database!!!"
   $MYSQL_CONN -e "CREATE DATABASE $MYSQL_DB ;" 2>/dev/null
+  echo "Check database!!!"
   mysql_create_status=`echo $?`
   if [ $mysql_create_status -ne 0 ]; then
     echo 'ERROR: Cannot create the database.'
