@@ -2,3 +2,4 @@
 set -e
 
 $ACTIVEMQ_HOME/bin/activemq console &
+wait $!
