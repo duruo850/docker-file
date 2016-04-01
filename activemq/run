@@ -1,13 +1,4 @@
 #!/bin/bash
 set -e
 
-_term() {
-  echo "Caught SIGTERM signal!"
-  kill -TERM "$child" 2>/dev/null
-}
-trap _term SIGTERM
-
-bin/activemq console &
-PID=$!
-
-wait $PID
+$ACTIVEMQ_HOME/bin/activemq console &
