@@ -11,6 +11,15 @@ MYSQL_USER=${MYSQL_USER:-}
 MYSQL_PASS=${MYSQL_PASS:-}
 MYSQL_DB=${MYSQL_DB:-"openfire"}
 
+USERSERVICE_ENABLE=${USERSERVICE_ENABLE:-"true"}
+USER_SERVICE_SECRET=${USER_SERVICE_SECRET:-"qOAWYYau"}
+XMPP_DOMAIN=${XMPP_DOMAIN:-}
+
+
+# Mysql command.
+MYSQL_CONN="mysql -h$MYSQL_HOST -u$MYSQL_USER -P$MYSQL_PORT -p$MYSQL_PASS"
+$($MYSQL_CONN -e exit)
+
 
 create_log_dir() {
   echo "Initializing ${OPENFIRE_LOG_DIR}..."
@@ -20,10 +29,6 @@ create_log_dir() {
 }
 
 check_db() {
-  # Mysql command.
-  MYSQL_CONN="mysql -h$MYSQL_HOST -u$MYSQL_USER -P$MYSQL_PORT -p$MYSQL_PASS"
-  $($MYSQL_CONN -e exit)
-
   # Drop and create, import database template.
   echo "Drop database!!!"
   $MYSQL_CONN -e "DROP DATABASE IF EXISTS $MYSQL_DB ;" 2>/dev/null
@@ -49,6 +54,15 @@ update_conf(){
   rm -rf /data/etc
 }
 
+update_db(){
+  echo "REPLACE INTO $MYSQL_DB.ofProperty(name, propValue) VALUES (\"plugin.userservice.enabled\", \"$USERSERVICE_ENABLE\");"
+  $MYSQL_CONN -e "REPLACE INTO $MYSQL_DB.ofProperty(name, propValue) VALUES (\"plugin.userservice.enabled\", \"$USERSERVICE_ENABLE\");"
+  echo "REPLACE INTO $MYSQL_DB.ofProperty(name, propValue) VALUES (\"plugin.userservice.secret\", \"$USER_SERVICE_SECRET\");"
+  $MYSQL_CONN -e "REPLACE INTO $MYSQL_DB.ofProperty(name, propValue) VALUES (\"plugin.userservice.secret\", \"$USER_SERVICE_SECRET\");"
+  echo "REPLACE INTO $MYSQL_DB.ofProperty(name, propValue) VALUES (\"xmpp.domain\", \"$XMPP_DOMAIN\");"
+  $MYSQL_CONN -e "REPLACE INTO $MYSQL_DB.ofProperty(name, propValue) VALUES (\"xmpp.domain\", \"$XMPP_DOMAIN\");"
+}
+
 set_admin_passwd(){
   if [[ $ADMIN_PASSWD != "" ]]; then
     sed -Ei "s/'admin', 'admin', 'Administrator',/'admin', '$ADMIN_PASSWD', 'Administrator',/" /usr/share/openfire/resources/database/openfire_mysql.sql
@@ -60,11 +74,23 @@ check_db
 update_conf
 set_admin_passwd
 
-echo "Starting openfire-server..."
-exec start-stop-daemon --start --chuid $OPENFIRE_USER:$OPENFIRE_USER --exec /usr/bin/java -- \
-    -server \
+DAEMON_OPTS="-server \
     -DopenfireHome=/usr/share/openfire \
     -Dopenfire.lib.dir=/usr/share/openfire/lib \
     -classpath /usr/share/openfire/lib/startup.jar \
-    -jar /usr/share/openfire/lib/startup.jar $*
+    -jar /usr/share/openfire/lib/startup.jar $*"
+	
+PIDFILE=/var/run/openfire.pid
+
+echo "start openfire..."
+start-stop-daemon -S --chuid $OPENFIRE_USER:$OPENFIRE_USER -b -m -p $PIDFILE --exec /usr/bin/java -- $DAEMON_OPTS
+echo "sleep 30..."
+sleep 30
+echo "stop openfire..."	
+start-stop-daemon -K -p $PIDFILE
+echo "update_db...."
+update_db
+echo "restart openfire..."
+exec start-stop-daemon -S --chuid $OPENFIRE_USER:$OPENFIRE_USER -m -p $PIDFILE --exec /usr/bin/java -- $DAEMON_OPTS
+
 
