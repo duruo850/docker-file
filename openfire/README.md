@@ -17,6 +17,6 @@ Openfire is a real time collaboration (RTC) server licensed under the Open Sourc
 ## Common
 
 
-```sudo docker run -d -p 13478:3478 -p 13479:3479 -p 15222:5222 -p 15223:5223 -p 15229:5229 -p 17070:7070 -p 17777:7777 -p 19090:9090 -p 19091:9091 -e ADMIN_PASSWD=xxxxx -e MYSQL_HOST=xxxxx -e MYSQL_PORT=3306 -e MYSQL_USER=xxxxx -e MYSQL_PASS=xxxxx duruo850/openfire
+```sudo docker run -d --name duruo850_openfire -p 13478:3478 -p 13479:3479 -p 15222:5222 -p 15223:5223 -p 15229:5229 -p 17070:7070 -p 17777:7777 -p 19090:9090 -p 19091:9091 -e ADMIN_PASSWD=xxxxx -e MYSQL_HOST=xxxxx -e MYSQL_PORT=3306 -e MYSQL_USER=xxxxx -e MYSQL_PASS=xxxxx duruo850/openfire
 ```
 

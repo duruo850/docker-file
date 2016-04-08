@@ -13,7 +13,7 @@ It is often referred to as a data structure server since keys can contain string
 ## Common
 
 
-```sudo docker run -d -p 16379:6379 -e REDIS_PASSWORD=xxxxx duruo850/redis
+```sudo docker run -d --name duruo850_redis -p 16379:6379 -e REDIS_PASSWORD=xxxxx duruo850/redis
 ```
 
 ## Command-line arguments
