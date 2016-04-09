@@ -63,7 +63,7 @@ check_db
 update_conf
 set_admin_passwd
 
-openfire_bin_path="./openfire/bin/openfire"
+openfire_bin_path="openfire/bin/openfire"
 chmod +x $openfire_bin_path
 
 
