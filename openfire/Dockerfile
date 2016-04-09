@@ -4,23 +4,26 @@ RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget unzip mysql-client\
  && rm -rf /var/lib/apt/lists/*
  
-ENV OPENFIRE_VERSION=4.0.2
+ENV OPENFIRE_VERSION=4_0_2
 
 WORKDIR /usr/local/bin
-RUN wget "http://download.igniterealtime.org/openfire/openfire_${OPENFIRE_VERSION}_all.deb" -O /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
- && dpkg -i /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
- && rm -rf openfire_${OPENFIRE_VERSION}_all.deb
- 
+RUN wget "http://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_${OPENFIRE_VERSION}.tar.gz" -O openfire_${OPENFIRE_VERSION}.tar.gz \
+ && tar zxvf openfire_${OPENFIRE_VERSION}.tar.gz \
+ && rm -rf openfire_${OPENFIRE_VERSION}.tar.gz
  
 # Openfire configurations.
-COPY conf /data/etc
+COPY openfire.xml openfire/conf/
 
 # Add openfire plugins from igniterealtime.
-WORKDIR /usr/share/openfire/plugins
-ADD http://www.igniterealtime.org/projects/openfire/plugins/dbaccess.jar /usr/share/openfire/plugins/dbaccess.jar
-ADD http://www.igniterealtime.org/projects/openfire/plugins/userservice.jar /usr/share/openfire/plugins/userservice.jar
-RUN unzip dbaccess.jar -d /usr/share/openfire/plugins/dbaccess && \
-    unzip userservice.jar -d /usr/share/openfire/plugins/userservice
+ADD http://www.igniterealtime.org/projects/openfire/plugins/dbaccess.jar openfire/plugins/dbaccess.jar
+ADD http://www.igniterealtime.org/projects/openfire/plugins/userservice.jar openfire/plugins/userservice.jar
+
+WORKDIR /usr/local/bin/openfire/plugins
+RUN unzip dbaccess.jar  -d /usr/local/bin/openfire/plugins/dbaccess&& \
+    unzip userservice.jar -d /usr/local/bin/openfire/plugins/userservice
+	
+	
+WORKDIR /usr/local/bin
  
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run

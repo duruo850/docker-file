@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-OPENFIRE_USER=openfire
-OPENFIRE_LOG_DIR=/var/log/openfire
-
 ADMIN_PASSWD=${ADMIN_PASSWD:-}
 MYSQL_HOST=${MYSQL_HOST:-}
 MYSQL_PORT=${MYSQL_PORT:-"3306"}
@@ -19,14 +16,6 @@ XMPP_DOMAIN=${XMPP_DOMAIN:-}
 # Mysql command.
 MYSQL_CONN="mysql -h$MYSQL_HOST -u$MYSQL_USER -P$MYSQL_PORT -p$MYSQL_PASS"
 $($MYSQL_CONN -e exit)
-
-
-create_log_dir() {
-  echo "Initializing ${OPENFIRE_LOG_DIR}..."
-  mkdir -p ${OPENFIRE_LOG_DIR}
-  chmod -R 0755 ${OPENFIRE_LOG_DIR}
-  chown -R ${OPENFIRE_USER}:${OPENFIRE_USER} ${OPENFIRE_LOG_DIR}
-}
 
 check_db() {
   # Drop and create, import database template.
@@ -44,14 +33,13 @@ check_db() {
 
 update_conf(){
   echo "update_conf"
-  sed -Ei "s/#OF_CONF_DB_HOST#/$MYSQL_HOST/" /data/etc/openfire.xml && \
-  sed -Ei "s/#OF_CONF_DB_PORT#/$MYSQL_PORT/" /data/etc/openfire.xml && \
-  sed -Ei "s/#OF_CONF_DB_USER_REPLACE#/$MYSQL_USER/" /data/etc/openfire.xml && \
-  sed -Ei "s/#OF_CONF_DB_PASS_REPLACE#/$MYSQL_PASS/" /data/etc/openfire.xml && \
-  sed -Ei "s/#OF_CONF_DB_NAME#/$MYSQL_DB/" /data/etc/openfire.xml
-  
-  cp -rf /data/etc/* /etc/openfire/
-  rm -rf /data/etc
+  openfire_xml_path="openfire/conf/openfire.xml"
+  echo "openfire_xml_path,"$openfire_xml_path
+  sed -Ei "s/#OF_CONF_DB_HOST#/$MYSQL_HOST/" $openfire_xml_path && \
+  sed -Ei "s/#OF_CONF_DB_PORT#/$MYSQL_PORT/" $openfire_xml_path && \
+  sed -Ei "s/#OF_CONF_DB_USER_REPLACE#/$MYSQL_USER/" $openfire_xml_path && \
+  sed -Ei "s/#OF_CONF_DB_PASS_REPLACE#/$MYSQL_PASS/" $openfire_xml_path && \
+  sed -Ei "s/#OF_CONF_DB_NAME#/$MYSQL_DB/" $openfire_xml_path
 }
 
 update_db(){
@@ -65,32 +53,28 @@ update_db(){
 
 set_admin_passwd(){
   if [[ $ADMIN_PASSWD != "" ]]; then
-    sed -Ei "s/'admin', 'admin', 'Administrator',/'admin', '$ADMIN_PASSWD', 'Administrator',/" /usr/share/openfire/resources/database/openfire_mysql.sql
+    openfire_mysql_path="openfire/resources/database/openfire_mysql.sql"
+        echo "openfire_mysql_path,"$openfire_mysql_path
+    sed -Ei "s/'admin', 'admin', 'Administrator',/'admin', '$ADMIN_PASSWD', 'Administrator',/" $openfire_mysql_path
   fi
 }
 
-create_log_dir
 check_db
 update_conf
 set_admin_passwd
 
-DAEMON_OPTS="-server \
-    -DopenfireHome=/usr/share/openfire \
-    -Dopenfire.lib.dir=/usr/share/openfire/lib \
-    -classpath /usr/share/openfire/lib/startup.jar \
-    -jar /usr/share/openfire/lib/startup.jar $*"
-	
-PIDFILE=/var/run/openfire.pid
+openfire_bin_path="./openfire/bin/openfire"
+chmod +x $openfire_bin_path
+
 
 echo "start openfire..."
-start-stop-daemon -S --chuid $OPENFIRE_USER:$OPENFIRE_USER -b -m -p $PIDFILE --exec /usr/bin/java -- $DAEMON_OPTS
+$openfire_bin_path start
 echo "sleep 30..."
 sleep 30
-echo "stop openfire..."	
-start-stop-daemon -K -p $PIDFILE
+echo "stop openfire..."
+$openfire_bin_path stop
 echo "update_db...."
 update_db
 echo "restart openfire..."
-exec start-stop-daemon -S --chuid $OPENFIRE_USER:$OPENFIRE_USER -m -p $PIDFILE --exec /usr/bin/java -- $DAEMON_OPTS
-
-
+$openfire_bin_path start
+tail -f openfire/logs/error.log
