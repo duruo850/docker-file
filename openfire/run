@@ -78,3 +78,4 @@ update_db
 echo "restart openfire..."
 $openfire_bin_path start
 tail -f openfire/logs/error.log
+
