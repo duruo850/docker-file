@@ -63,19 +63,18 @@ check_db
 update_conf
 set_admin_passwd
 
-openfire_bin_path="openfire/bin/openfire"
-chmod +x $openfire_bin_path
+chmod +x openfire/bin/openfire
 
 
 echo "start openfire..."
-$openfire_bin_path start
+bash openfire/bin/openfire start
 echo "sleep 30..."
 sleep 30
 echo "stop openfire..."
-$openfire_bin_path stop
+bash openfire/bin/openfire stop
 echo "update_db...."
 update_db
 echo "restart openfire..."
-$openfire_bin_path start
+bash openfire/bin/openfire start
 tail -f openfire/logs/error.log
 
