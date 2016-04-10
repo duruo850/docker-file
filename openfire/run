@@ -18,17 +18,16 @@ MYSQL_CONN="mysql -h$MYSQL_HOST -u$MYSQL_USER -P$MYSQL_PORT -p$MYSQL_PASS"
 $($MYSQL_CONN -e exit)
 
 check_db() {
-  # Drop and create, import database template.
-  echo "Drop database!!!"
-  $MYSQL_CONN -e "DROP DATABASE IF EXISTS $MYSQL_DB ;" 2>/dev/null
+  # Create, import database template.
   echo "Create database!!!"
-  $MYSQL_CONN -e "CREATE DATABASE $MYSQL_DB ;" 2>/dev/null
+  $MYSQL_CONN -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB ;" 2>/dev/null
   echo "Check database!!!"
   mysql_create_status=`echo $?`
   if [ $mysql_create_status -ne 0 ]; then
     echo 'ERROR: Cannot create the database.'
     exit 1
   fi
+  
 }
 
 update_conf(){
@@ -54,7 +53,7 @@ update_db(){
 set_admin_passwd(){
   if [[ $ADMIN_PASSWD != "" ]]; then
     openfire_mysql_path="openfire/resources/database/openfire_mysql.sql"
-        echo "openfire_mysql_path,"$openfire_mysql_path
+    echo "openfire_mysql_path,"$openfire_mysql_path
     sed -Ei "s/'admin', 'admin', 'Administrator',/'admin', '$ADMIN_PASSWD', 'Administrator',/" $openfire_mysql_path
   fi
 }
@@ -68,8 +67,8 @@ chmod +x openfire/bin/openfire
 
 echo "start openfire..."
 bash openfire/bin/openfire start
-echo "sleep 30..."
-sleep 30
+echo "sleep 10..."
+sleep 10
 echo "stop openfire..."
 bash openfire/bin/openfire stop
 echo "update_db...."
