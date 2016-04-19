@@ -1,18 +1,12 @@
 #!/bin/bash
 set -e
 
-REDIS_USER=redis
 REDIS_DATA_DIR=/var/lib/redis
 REDIS_LOG_DIR=/var/log/redis
 REDIS_SERVER=/usr/local/bin/redis-server
 REDIS_CONF=/usr/local/bin/redis.conf
 
 REDIS_PASSWORD=${REDIS_PASSWORD:-}
-
-create_user() {
-  addgroup $REDIS_USER
-  useradd  -p "S0dAmthh3vjPQ" -g $REDIS_USER  $REDIS_USER
-}
 
 create_data_dir() {
   mkdir -p $REDIS_DATA_DIR
@@ -34,7 +28,6 @@ update_conf() {
   sed -i 's/^# unixsocketperm 755/unixsocketperm 777/' $REDIS_CONF
 }
 
-create_user
 create_data_dir
 update_conf
 

@@ -1,5 +1,9 @@
 FROM duruo850/base
 
+
+ENV REDIS_USER redis
+RUN addgroup $REDIS_USER && useradd -p "S0dAmthh3vjPQ" -g $REDIS_USER $REDIS_USER
+
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y g++ wget make\
  && rm -rf /var/lib/apt/lists/*
