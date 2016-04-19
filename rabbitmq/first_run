@@ -3,7 +3,7 @@ set -e
 
 
 USER=${RABBITMQ_USERNAME:-rabbitmq}
-PASS=${RABBITMQ_PASSWORD:-$(pwgen -s -1 16)}
+PASS=${RABBITMQ_PASSWORD:-123456}
 VHOST=${RABBITMQ_VHOST:-/}
 
 # Create User

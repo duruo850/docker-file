@@ -4,7 +4,7 @@ set -e
 
 # Initialize first run
 if [[ -e /.firstrun ]]; then
-    /scripts/first_run.sh
+    sh first_run
 fi
 
 # Start RabbitMQ

@@ -1,5 +1,9 @@
 FROM duruo850/base
 
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y wget\
+ && rm -rf /var/lib/apt/lists/*
+
 # Install RabbitMQ 3.6.1
 RUN DEBIAN_FRONTEND=noninteractive && \
     cd /tmp && \
@@ -14,7 +18,8 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-ADD scripts /usr/local/bin
+ADD run /usr/local/bin/run
+ADD first_run /usr/local/bin/first_run
 RUN chmod +x /usr/local/bin/*
 RUN touch /.firstrun
 
