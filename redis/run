@@ -28,8 +28,13 @@ update_conf() {
   sed -i 's/^# unixsocketperm 755/unixsocketperm 777/' $REDIS_CONF
 }
 
-create_data_dir
-update_conf
+
+if [ ! -f "/tmp/is_init" ]; then
+  touch /tmp/is_init
+  create_data_dir
+  create_log_dir
+  update_conf
+fi
 
 echo "Starting redis-server..."
 exec start-stop-daemon --start --chuid $REDIS_USER:$REDIS_USER --exec $REDIS_SERVER -- $REDIS_CONF ${REDIS_PASSWORD:+--requirepass $REDIS_PASSWORD} $*
