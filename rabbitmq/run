@@ -1,10 +1,9 @@
 #!/bin/bash
-set -e
 
 
 # Initialize first run
-if [[ -e /.firstrun ]]; then
-    sh first_run
+if [ -e /usr/local/bin/first_run ]; then
+    sh /usr/local/bin/first_run
 fi
 
 # Start RabbitMQ

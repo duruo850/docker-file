@@ -20,4 +20,4 @@ echo "RabbitMQ Password: \"$PASS\""
 echo "RabbitMQ Virtual Host: \"$VHOST\""
 echo "========================================================================"
 
-rm -f /.firstrun
+rm -f /usr/local/bin/first_run

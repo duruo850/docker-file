@@ -18,10 +18,13 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y psmisc\
+ && rm -rf /var/lib/apt/lists/*
+
 ADD run /usr/local/bin/run
 ADD first_run /usr/local/bin/first_run
 RUN chmod +x /usr/local/bin/*
-RUN touch /.firstrun
 
 
 
@@ -30,3 +33,4 @@ EXPOSE 15672
 
 VOLUME ["/var/log/rabbitmq"]
 CMD ["/usr/local/bin/run"]
+
