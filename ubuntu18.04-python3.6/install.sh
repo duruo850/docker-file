@@ -19,7 +19,7 @@ apt-get install --yes libmysqld-dev
 apt-get install --yes uwsgi-plugin-python
 apt-get install --yes swig
 apt-get install --yes libssl-dev
-apt-get install --yes pylint
+DEBIAN_FRONTEND=noninteractive apt-get install --yes pylint
 apt-get install --yes mysql-client
 apt-get install --yes libfreetype6-dev
 apt-get install --yes libjpeg-dev
