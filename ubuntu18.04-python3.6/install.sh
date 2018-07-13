@@ -1,19 +1,25 @@
 #!/bin/bash
 export py=python
 
-# 安装pyhon3.6.5
+# 安装pyhon3.6
 apt-get update
 apt-get install --yes python3.6
 ln -sf /usr/bin/python3.6 /usr/bin/python3
 ln -sf /usr/bin/python3 /usr/bin/python
-ln -sf /usr/bin/pip3 /usr/bin/pip
 apt-get install --yes python3-dev
 apt-get install --yes libpython3.6-dev
-apt-get install --yes python3-pip
-pip3 install --upgrade pip
+
 
 # 解决ModuleNotFoundError: No module named 'pip._internal'
+python3 -m pip uninstall pip
+apt-get remove --yes python3-pip
+apt-get auto-remove --yes python3-pip
+apt-get purge --yes python3-pip
+
+apt-get install --yes python3-pip
 python3 -m pip install --upgrade pip
+ln -sf /usr/bin/pip3 /usr/bin/pip
+pip3 install --upgrade pip
 
 apt-get install --yes libmysqld-dev
 apt-get install --yes uwsgi-plugin-python
