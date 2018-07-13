@@ -11,7 +11,7 @@ apt-get install --yes libpython3.6-dev
 
 
 # 解决ModuleNotFoundError: No module named 'pip._internal'
-python3 -m pip uninstall pip
+python3 -m pip uninstall --yes pip
 apt-get remove --yes python3-pip
 apt-get auto-remove --yes python3-pip
 apt-get purge --yes python3-pip
@@ -36,3 +36,7 @@ apt-get install --yes libyaml-cpp-dev
 apt-get install --yes libffi-dev libssl-dev
 ln -sf /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib
 pip3 install -r `dirname ${BASH_SOURCE[0]}`/requirements.txt
+
+# 再进行一次python3链接，避免安装过程中被修改
+ln -sf /usr/bin/python3.6 /usr/bin/python3
+ln -sf /usr/bin/python3 /usr/bin/python
