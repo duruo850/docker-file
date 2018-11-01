@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /bin/consul agent -config-dir=/config "$@";;
