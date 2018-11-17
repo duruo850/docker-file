@@ -14,6 +14,7 @@ RUN apt-get update  && apt-get -y upgrade  \
     mysql-client libfreetype6-dev libjpeg-dev libxml2-dev libxslt-dev python-yaml python-lxml libyaml-cpp-dev \
     libffi-dev libssl-dev \
   && ln -sf /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib \
-  && cd /tmp && pip3 install -r requirements.txt && rm /tmp/requirements.txt
+  && cd /tmp && pip3 install -r requirements.txt && rm /tmp/requirements.txt \
+  && apt-get -y clean && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["python3"]
