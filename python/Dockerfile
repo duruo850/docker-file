@@ -1,17 +1,19 @@
 FROM ubuntu:18.04
 
+MAINTAINER Jay <zhanchenjin.2008@163.com>
+
+ADD requirements.txt /tmp/
 
 ENV NGINX_VERSION 3.7
 
-
 RUN apt-get update  && apt-get -y upgrade  \
-  && apt-get install -y python$(NGINX_VERSION) python3-pip python3-dev  libpython3.7-dev python3-pip\
-  && ln -sf /usr/bin/python3 /usr/bin/python \
-  && pip3 install --upgrade pip \
-  && python3 -m pip install --upgrade pip  ## fix ModuleNotFoundError: No module named 'pip._internal' \
-  && apt-get install --yes libmysqld-dev uwsgi-plugin-python swig libssl-dev pylint mysql-client libfreetype6-dev \
-    libjpeg-dev libxml2-dev libxslt-dev python-yaml python-lxml libyaml-cpp-dev libffi-dev libssl-dev \
+  && apt-get install -y vim python${NGINX_VERSION} python3.7-dev  libpython3.7-dev python-setuptools\
+  && ln -sf /usr/bin/python3.7 /usr/bin/python3 && ln -sf /usr/bin/python3 /usr/bin/python \
+  && apt-get install -y python3-pip && ln -sf /usr/bin/pip3 /usr/bin/pip \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y libmysqld-dev uwsgi-plugin-python swig libssl-dev pylint \
+    mysql-client libfreetype6-dev libjpeg-dev libxml2-dev libxslt-dev python-yaml python-lxml libyaml-cpp-dev \
+    libffi-dev libssl-dev \
   && ln -sf /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib \
-  && pip install -r requirements.txt
+  && cd /tmp && pip3 install -r requirements.txt && rm /tmp/requirements.txt
 
 ENTRYPOINT ["python3"]
