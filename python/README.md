@@ -4,7 +4,7 @@ python3 image
 
 # build
 
-docker build -t duruo850/python:3.7-ubuntu18.04 --no-cache .
+docker build -t duruo850/python:3.7.0-ubuntu18.04 --no-cache .
 
 
 # Environment variables
@@ -16,6 +16,6 @@ docker build -t duruo850/python:3.7-ubuntu18.04 --no-cache .
 
 
 ```
-docker run --name python -d duruo850/python:3.7-ubuntu18.04 
+docker run --name python -d duruo850/python:3.7.0-ubuntu18.04 
 ```
 

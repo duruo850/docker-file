@@ -7,7 +7,7 @@ ADD requirements.txt /tmp/
 ENV NGINX_VERSION 3.7
 
 RUN apt-get update  && apt-get -y upgrade  \
-  && apt-get install -y vim python${NGINX_VERSION} python3.7-dev  libpython3.7-dev python-setuptools\
+  && apt-get install -y vim python${NGINX_VERSION} python3.7-dev  libpython3.7-dev python3-setuptools\
   && ln -sf /usr/bin/python3.7 /usr/bin/python3 && ln -sf /usr/bin/python3 /usr/bin/python \
   && apt-get install -y python3-pip && ln -sf /usr/bin/pip3 /usr/bin/pip \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y libmysqld-dev uwsgi-plugin-python swig libssl-dev pylint \
